@@ -7,11 +7,11 @@ int main(int argc, const char * argv[]) {
     int pilihan, id, harga;
     string nama, kategori;
     
-    root = insert_NIM(root, 50, "Steak Sapi", "Makanan", 150000);
-    root = insert_NIM(root, 30, "Ayam Bakar", "Makanan", 45000);
-    root = insert_NIM(root, 70, "Pasta Carbonara", "Makanan", 60000);
-    root = insert_NIM(root, 20, "Es Teh", "Minuman", 5000);
-    root = insert_NIM(root, 40, "Jus Jeruk", "Minuman", 15000);
+    root = insert(root, 50, "Steak Sapi", "Makanan", 150000);
+    root = insert(root, 30, "Ayam Bakar", "Makanan", 45000);
+    root = insert(root, 70, "Pasta Carbonara", "Makanan", 60000);
+    root = insert(root, 20, "Es Teh", "Minuman", 5000);
+    root = insert(root, 40, "Jus Jeruk", "Minuman", 15000);
 
     do {
         cout << "\n=== RESTORAN BINARY TREE SYSTEM ===" << endl;
@@ -30,23 +30,23 @@ int main(int argc, const char * argv[]) {
                 cout << "Nama Menu: "; getline(cin, nama);
                 cout << "Kategori: "; getline(cin, kategori);
                 cout << "Harga: "; cin >> harga;
-                root = insert_NIM(root, id, nama, kategori, harga);
+                root = insert(root, id, nama, kategori, harga);
                 break;
                 
             case 2:
                 cout << "\n--- Daftar Menu (In-Order) ---" << endl;
-                inOrder_NIM(root);
+                inOrder(root);
                 break;
                 
             case 3:
                 cout << "\n--- Struktur Hierarki (Pre-Order) ---" << endl;
-                preOrder_NIM(root);
+                preOrder(root);
                 break;
                 
             case 4:
                 cout << "Masukkan ID yang dicari: "; cin >> id;
                 {
-                    adrNode hasil = search_NIM(root, id);
+                    adrNode hasil = search(root, id);
                     if (hasil != nullptr) {
                         cout << "DITEMUKAN: " << hasil->nama << " | " << hasil->kategori << " | Rp" << hasil->harga << endl;
                     } else {
@@ -56,7 +56,7 @@ int main(int argc, const char * argv[]) {
                 break;
             
             case 5:
-                findMinPrice_NIM(root);
+                findMinPrice(root);
                 break;
                 
             case 0:
