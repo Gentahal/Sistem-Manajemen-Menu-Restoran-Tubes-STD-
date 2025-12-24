@@ -2,29 +2,39 @@
 #include "menu.hpp"
 
 int main() {
-    // Level 1
+
     adrNode root = createNode(1, "MENU RESTORAN", 0);
 
-    // Level 2
     adrNode makanan = createNode(10, "MAKANAN", 0);
     adrNode minuman = createNode(20, "MINUMAN", 0);
 
     addChild(root, makanan);
     addChild(root, minuman);
 
-    // Level 3 - Makanan
-    addChild(makanan, createNode(101, "Steak Sapi", 150000));
-    addChild(makanan, createNode(102, "Ayam Bakar", 45000));
+    adrNode mainCourse = createNode(100, "MAIN COURSE", 0);
+    adrNode dessert    = createNode(110, "DESSERT", 0);
+    adrNode beverage   = createNode(200, "BEVERAGE", 0);
 
-    // Level 3 - Minuman
-    addChild(minuman, createNode(201, "Es Teh", 5000));
-    addChild(minuman, createNode(202, "Jus Jeruk", 15000));
+    addChild(makanan, mainCourse);
+    addChild(makanan, dessert);
+    addChild(minuman, beverage);
+
+    addChild(mainCourse, createNode(1001, "Steak Sapi", 150000));
+    addChild(mainCourse, createNode(1002, "Ayam Bakar", 45000));
+
+    // Dessert
+    addChild(dessert, createNode(1101, "Puding Coklat", 20000));
+    addChild(dessert, createNode(1102, "Es Krim Vanilla", 18000));
+
+    // Beverage
+    addChild(beverage, createNode(2001, "Es Teh", 5000));
+    addChild(beverage, createNode(2002, "Jus Jeruk", 15000));
 
     int pilihan, id;
     adrNode hasil;
 
     do {
-        cout << "\n=== SISTEM MENU RESTORAN (TREE) ===" << endl;
+        cout << "\n=== SISTEM MENU RESTORAN (RECURSIVE TREE) ===" << endl;
         cout << "1. Tampilkan Pre-Order" << endl;
         cout << "2. Tampilkan In-Order" << endl;
         cout << "3. Tampilkan Post-Order" << endl;
