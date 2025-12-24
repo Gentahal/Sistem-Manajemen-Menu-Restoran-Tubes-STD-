@@ -1,73 +1,81 @@
 #include <iostream>
 #include "menu.hpp"
 
-int main(int argc, const char * argv[]) {
-    adrNode root = nullptr;
-    
-    int pilihan, id, harga;
-    string nama, kategori;
-    
-    root = insert(root, 50, "Steak Sapi", "Makanan", 150000);
-    root = insert(root, 30, "Ayam Bakar", "Makanan", 45000);
-    root = insert(root, 70, "Pasta Carbonara", "Makanan", 60000);
-    root = insert(root, 20, "Es Teh", "Minuman", 5000);
-    root = insert(root, 40, "Jus Jeruk", "Minuman", 15000);
+int main() {
+    // Level 1
+    adrNode root = createNode(1, "MENU RESTORAN", 0);
+
+    // Level 2
+    adrNode makanan = createNode(10, "MAKANAN", 0);
+    adrNode minuman = createNode(20, "MINUMAN", 0);
+
+    addChild(root, makanan);
+    addChild(root, minuman);
+
+    // Level 3 - Makanan
+    addChild(makanan, createNode(101, "Steak Sapi", 150000));
+    addChild(makanan, createNode(102, "Ayam Bakar", 45000));
+
+    // Level 3 - Minuman
+    addChild(minuman, createNode(201, "Es Teh", 5000));
+    addChild(minuman, createNode(202, "Jus Jeruk", 15000));
+
+    int pilihan, id;
+    adrNode hasil;
 
     do {
-        cout << "\n=== RESTORAN BINARY TREE SYSTEM ===" << endl;
-        cout << "1. Insert Menu Baru" << endl;
-        cout << "2. Tampilkan Menu (In-Order / Terurut)" << endl;
-        cout << "3. Tampilkan Struktur Tree (Pre-Order)" << endl;
-        cout << "4. Cari Menu (Search by ID)" << endl;
-        cout << "5. Menu Termurah (Find Min)" << endl;
+        cout << "\n=== SISTEM MENU RESTORAN (TREE) ===" << endl;
+        cout << "1. Tampilkan Pre-Order" << endl;
+        cout << "2. Tampilkan In-Order" << endl;
+        cout << "3. Tampilkan Post-Order" << endl;
+        cout << "4. Cari Menu (ID)" << endl;
+        cout << "5. Menu Termurah" << endl;
         cout << "0. Keluar" << endl;
-        cout << "Pilihan: "; cin >> pilihan;
-        
+        cout << "Pilihan: ";
+        cin >> pilihan;
+
         switch (pilihan) {
             case 1:
-                cout << "Masukkan ID (Angka Unik): "; cin >> id;
-                cin.ignore(); // Membersihkan buffer
-                cout << "Nama Menu: "; getline(cin, nama);
-                cout << "Kategori: "; getline(cin, kategori);
-                cout << "Harga: "; cin >> harga;
-                root = insert(root, id, nama, kategori, harga);
-                break;
-                
-            case 2:
-                cout << "\n--- Daftar Menu (In-Order) ---" << endl;
-                inOrder(root);
-                break;
-                
-            case 3:
-                cout << "\n--- Struktur Hierarki (Pre-Order) ---" << endl;
                 preOrder(root);
                 break;
-                
+
+            case 2:
+                inOrder(root);
+                break;
+
+            case 3:
+                postOrder(root);
+                break;
+
             case 4:
-                cout << "Masukkan ID yang dicari: "; cin >> id;
-                {
-                    adrNode hasil = search(root, id);
-                    if (hasil != nullptr) {
-                        cout << "DITEMUKAN: " << hasil->nama << " | " << hasil->kategori << " | Rp" << hasil->harga << endl;
-                    } else {
-                        cout << "Menu dengan ID " << id << " TIDAK DITEMUKAN." << endl;
-                    }
-                }
+                cout << "Masukkan ID: ";
+                cin >> id;
+                hasil = searchById(root, id);
+                if (hasil != nullptr)
+                    cout << "Ditemukan: " << hasil->nama << endl;
+                else
+                    cout << "Menu tidak ditemukan." << endl;
                 break;
-            
-            case 5:
-                findMinPrice(root);
+
+            case 5: {
+                adrNode minNode = nullptr;
+                findMinPrice(root, minNode);
+                if (minNode != nullptr)
+                    cout << "Menu Termurah: " << minNode->nama
+                         << " - Rp" << minNode->harga << endl;
                 break;
-                
+            }
+
             case 0:
-                cout << "Program Selesai." << endl;
+                cout << "Program selesai." << endl;
                 break;
-                
+
             default:
                 cout << "Pilihan tidak valid." << endl;
-                break;
         }
+
     } while (pilihan != 0);
-    
+
     return 0;
 }
+

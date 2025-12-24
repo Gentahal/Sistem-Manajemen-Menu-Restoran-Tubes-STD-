@@ -1,34 +1,28 @@
-#ifndef menu_hpp
-#define menu_hpp
+#ifndef MENU_HPP
+#define MENU_HPP
 
-#include <stdio.h>
 #include <iostream>
 #include <string>
 using namespace std;
 
-typedef struct MenuNode *adrNode;
+typedef struct MenuNode* adrNode;
 
 struct MenuNode {
     int id;
     string nama;
-    string kategori;
     int harga;
-    adrNode left;
-    adrNode right;
+
+    adrNode child;
+    adrNode sibling;
 };
 
-adrNode createNode(int id, string nama, string kategori, int harga);
-
-adrNode insert(adrNode root, int id, string nama, string kategori, int harga);
-
-adrNode search(adrNode root, int key);
-
+adrNode createNode(int id, string nama, int harga);
+void addChild(adrNode parent, adrNode child);
 void preOrder(adrNode root);
-
 void inOrder(adrNode root);
-
 void postOrder(adrNode root);
+adrNode searchById(adrNode root, int id);
+void findMinPrice(adrNode root, adrNode &minNode);
 
-void findMinPrice(adrNode root);
+#endif
 
-#endif /* restoran_hpp */

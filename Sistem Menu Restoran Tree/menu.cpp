@@ -1,76 +1,81 @@
 #include "menu.hpp"
 
-adrNode createNode(int id, string nama, string kategori, int harga) {
+adrNode createNode(int id, string nama, int harga) {
     adrNode p = new MenuNode;
     p->id = id;
     p->nama = nama;
-    p->kategori = kategori;
     p->harga = harga;
-    p->left = nullptr;
-    p->right = nullptr;
+    p->child = nullptr;
+    p->sibling = nullptr;
     return p;
 }
 
-adrNode insert(adrNode root, int id, string nama, string kategori, int harga) {
-    if (root == nullptr) {
-        return createNode(id, nama, kategori, harga);
-    }
-    
-    if (id < root->id) {
-        root->left = insert(root->left, id, nama, kategori, harga);
-    } else if (id > root->id) {
-        root->right = insert(root->right, id, nama, kategori, harga);
+void addChild(adrNode parent, adrNode child) {
+    if (parent->child == nullptr) {
+        parent->child = child;
     } else {
-        cout << "Duplikat: ID Menu " << id << " sudah ada dalam sistem." << endl;
+        adrNode temp = parent->child;
+        while (temp->sibling != nullptr) {
+            temp = temp->sibling;
+        }
+        temp->sibling = child;
     }
-    return root;
 }
 
-adrNode search(adrNode root, int key) {
-    if (root == nullptr || root->id == key) {
-        return root;
-    }
-    
-    if (key < root->id) {
-        return search(root->left, key);
-    }
-    
-    return search(root->right, key);
-}
-
+// Pre Order
 void preOrder(adrNode root) {
     if (root != nullptr) {
-        cout << "[" << root->id << "] " << root->nama << " (" << root->kategori << ")" << endl;
-        preOrder(root->left);
-        preOrder(root->right);
+        cout << "[" << root->id << "] " << root->nama;
+        if (root->harga > 0)
+            cout << " - Rp" << root->harga;
+        cout << endl;
+
+        preOrder(root->child);
+        preOrder(root->sibling);
     }
 }
 
 void inOrder(adrNode root) {
     if (root != nullptr) {
-        inOrder(root->left);
-        cout << "[" << root->id << "] " << root->nama << " - Rp" << root->harga << endl;
-        inOrder(root->right);
+        inOrder(root->child);
+        cout << "[" << root->id << "] " << root->nama << endl;
+        inOrder(root->sibling);
     }
 }
 
 void postOrder(adrNode root) {
     if (root != nullptr) {
-        postOrder(root->left);
-        postOrder(root->right);
+        postOrder(root->child);
         cout << "[" << root->id << "] " << root->nama << endl;
+        postOrder(root->sibling);
     }
 }
 
-void findMinPrice(adrNode root) {
-    if (root == nullptr) {
-        cout << "Tree kosong." << endl;
-        return;
-    }
-    
-    adrNode current = root;
-    while (current->left != nullptr) {
-        current = current->left;
-    }
-    cout << "Menu Termurah (ID Terkecil): " << current->nama << " dengan harga Rp" << current->harga << endl;
+adrNode searchById(adrNode root, int id) {
+    if (root == nullptr)
+        return nullptr;
+
+    if (root->id == id)
+        return root;
+
+    adrNode found = searchById(root->child, id);
+    if (found != nullptr)
+        return found;
+
+    return searchById(root->sibling, id);
 }
+
+void findMinPrice(adrNode root, adrNode &minNode) {
+    if (root == nullptr)
+        return;
+
+    if (root->harga > 0) {
+        if (minNode == nullptr || root->harga < minNode->harga) {
+            minNode = root;
+        }
+    }
+
+    findMinPrice(root->child, minNode);
+    findMinPrice(root->sibling, minNode);
+}
+
